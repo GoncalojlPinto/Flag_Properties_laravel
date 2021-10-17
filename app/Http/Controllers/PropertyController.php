@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\house;
+use App\Models\Property;
 use Illuminate\Http\Request;
 
-class HouseController extends Controller
+class PropertyController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class HouseController extends Controller
      */
     public function index()
     {
-        //
+        return view('properties.index', ["properties" => Property::all()]);
     }
 
     /**
@@ -24,7 +24,7 @@ class HouseController extends Controller
      */
     public function create()
     {
-        //
+        return view('properties.create');
     }
 
     /**
@@ -35,16 +35,18 @@ class HouseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $input = $request->all();
+
+        
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\house  $house
+     * @param  \App\Models\Property  $property
      * @return \Illuminate\Http\Response
      */
-    public function show(house $house)
+    public function show(Property $property)
     {
         //
     }
@@ -52,10 +54,10 @@ class HouseController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\house  $house
+     * @param  \App\Models\Property  $property
      * @return \Illuminate\Http\Response
      */
-    public function edit(house $house)
+    public function edit(Property $property)
     {
         //
     }
@@ -64,10 +66,10 @@ class HouseController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\house  $house
+     * @param  \App\Models\Property  $property
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, house $house)
+    public function update(Request $request, Property $property)
     {
         //
     }
@@ -75,10 +77,10 @@ class HouseController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\house  $house
+     * @param  \App\Models\Property  $property
      * @return \Illuminate\Http\Response
      */
-    public function destroy(house $house)
+    public function destroy(Property $property)
     {
         //
     }
