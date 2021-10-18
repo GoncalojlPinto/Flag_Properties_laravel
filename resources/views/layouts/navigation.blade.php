@@ -1,10 +1,10 @@
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100 border-top-5">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl pl-0 ml-0 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl pl-0 ml-0  sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
-                <div class="flex-shrink-0 flex ml-1">
+                <div class="flex-shrink-0 flex ml-1 pr-4">
                     <a href="{{ route('dashboard') }}">
                         <img src="../../assets/flagImoveis.png" alt="logo" width='70px' height='70px'>
                     </a>
@@ -18,6 +18,7 @@
                     <x-nav-link :href="route('properties.index')" :active="request()->routeIs('properties.index')">
                         {{ __('Imóveis') }}
                     </x-nav-link>
+
 
                 </div>
             </div>

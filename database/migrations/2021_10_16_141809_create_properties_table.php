@@ -18,10 +18,10 @@ class CreatePropertiesTable extends Migration
             $table->string('description', 255);
             $table->string('floor', 3);
             $table->string('type', 2);
-            $table->unsignedTinyInteger('bedrooms')->unsigned();
-            $table->unsignedTinyInteger('bathrooms')->unsigned();
+            $table->unsignedTinyInteger('bedrooms');
+            $table->unsignedTinyInteger('bathrooms');
             $table->string('location', 255);
-            $table->unsignedInteger('price')->unsigned();
+            $table->unsignedInteger('price');
             $table->timestamps();
         });
     }

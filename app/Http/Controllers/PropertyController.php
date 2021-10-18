@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Property;
 use Illuminate\Http\Request;
 
+
 class PropertyController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -24,7 +26,9 @@ class PropertyController extends Controller
      */
     public function create()
     {
-        return view('properties.create');
+        $typologies = ['T0', 'T1', 'T2', 'T3', 'T4', 'T5', 'T6'];
+
+        return view('properties.create', ["typologies" => $typologies]);
     }
 
     /**
@@ -37,7 +41,7 @@ class PropertyController extends Controller
     {
         $input = $request->all();
 
-        
+
     }
 
     /**
@@ -48,7 +52,7 @@ class PropertyController extends Controller
      */
     public function show(Property $property)
     {
-        //
+        return view('properties.show', ['property' => $property]);
     }
 
     /**
@@ -59,7 +63,7 @@ class PropertyController extends Controller
      */
     public function edit(Property $property)
     {
-        //
+
     }
 
     /**
@@ -84,4 +88,5 @@ class PropertyController extends Controller
     {
         //
     }
+
 }
