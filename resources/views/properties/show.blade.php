@@ -30,7 +30,12 @@
                         </div>
                     </div>
                 </div>
+                <div class="float-right">
+
+                  <a href="{{ route('properties.index') }}" class="btn btn-small btn-primary mt-3 w-24">{{ __('Voltar') }}</a>
+
+            </div>
             </div>
         </div>
-    </div>
+</div>
 </x-app-layout>

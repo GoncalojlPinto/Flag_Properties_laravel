@@ -23,7 +23,7 @@
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>
     </head>
-    <body class="font-sans antialiased main-bg w-full h-full bg-cover bg-left">
+    <body class="font-sans antialiased main-bg w-full h-full bg-cover bg-left ">
         <div class="">
             @include('layouts.navigation')
 

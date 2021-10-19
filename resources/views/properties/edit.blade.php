@@ -104,7 +104,7 @@
         <div class="form-group row">
             <div class="col-md-6">
                 <button type="submit" class="btn btn-primary">
-                    {{ __("Postar Imóvel") }}
+                    {{ __("Confirmar") }}
                 </button>
             </div>
         </div>
