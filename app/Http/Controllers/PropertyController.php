@@ -56,7 +56,7 @@ class PropertyController extends Controller
      */
     public function show(Property $property)
     {
-        return view('properties.show');
+        return view('properties.show', ['property' => $property]);
     }
 
     /**
@@ -67,7 +67,7 @@ class PropertyController extends Controller
      */
     public function edit(Property $property)
     {
-
+        return view('properties.edit', ['property' => $property]);
     }
 
     /**
@@ -79,7 +79,13 @@ class PropertyController extends Controller
      */
     public function update(Request $request, Property $property)
     {
-        //
+        $input = $request->all();
+
+        // $validator = Property::validateDataInput($input);
+        $property = $this->fillProperty($property, $input);
+        $property->save();
+
+        return redirect(route('properties.index'))->with("message", "Imóvel atualizado com sucesso.");
     }
 
     /**
@@ -90,7 +96,8 @@ class PropertyController extends Controller
      */
     public function destroy(Property $property)
     {
-        //
+        Property::destroy($property->id);
+        return redirect()->route('properties.index')->with("message", " Imóvel Eliminado com sucesso.");
     }
 
     private function fillProperty(Property $property, array $input): Property
