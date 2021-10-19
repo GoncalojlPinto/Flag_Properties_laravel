@@ -16,7 +16,6 @@ class CreatePropertiesTable extends Migration
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
             $table->string('description', 255);
-            $table->string('floor', 3);
             $table->string('type', 2);
             $table->unsignedTinyInteger('bedrooms');
             $table->unsignedTinyInteger('bathrooms');

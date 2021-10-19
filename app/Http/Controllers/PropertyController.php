@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Property;
 use Illuminate\Http\Request;
 
-
 class PropertyController extends Controller
 {
 
@@ -18,7 +17,6 @@ class PropertyController extends Controller
     {
         return view('properties.index', ["properties" => Property::all()]);
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -26,9 +24,9 @@ class PropertyController extends Controller
      */
     public function create()
     {
-        $typologies = ['T0', 'T1', 'T2', 'T3', 'T4', 'T5', 'T6'];
 
-        return view('properties.create', ["typologies" => $typologies]);
+        // ["typologies" => Property::$typologies]
+        return view('properties.create');
     }
 
     /**
@@ -41,6 +39,12 @@ class PropertyController extends Controller
     {
         $input = $request->all();
 
+        // $validator = Property::validateDataInput($input);
+        $property = $this->fillProperty(new Property(), $input);
+        $property->save();
+
+        return redirect(route('properties.index'));
+
 
     }
 
@@ -52,7 +56,7 @@ class PropertyController extends Controller
      */
     public function show(Property $property)
     {
-        return view('properties.show', ['property' => $property]);
+        return view('properties.show');
     }
 
     /**
@@ -89,4 +93,20 @@ class PropertyController extends Controller
         //
     }
 
-}
+    private function fillProperty(Property $property, array $input): Property
+    {
+        $property->description = $input['description'];
+        $property->floor = $input['floor'];
+        $property->type = $input['type'];
+        $property->bedrooms = $input['bedrooms'];
+        $property->bathrooms = $input['bathrooms'];
+        $property->location = $input['location'];
+        $property->price = $input['price'];
+
+        // if($input['photo']){
+        //     $property->photo = $input['photo'];
+
+        return $property;
+        }
+
+    }

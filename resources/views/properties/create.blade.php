@@ -19,6 +19,17 @@
             </div>
         </div>
         <div class="form-group row">
+            <label for="location" class="col-md-4 col-form-label text-md-right">{{ __('Localização') }}</label>
+            <div class="col-md-6">
+                <input type="text" id="location" name="location" class="form-control @error('location') is-invalid @enderror" required autofocus>
+                @error('location')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+        </div>
+        <div class="form-group row">
             <label for="floor" class="col-md-4 col-form-label text-md-right">{{ __('Andar') }}</label>
             <div class="col-md-6">
                 <input type="text" id="floor" name="floor" class="form-control @error('floor') is-invalid @enderror" required autofocus>
@@ -32,11 +43,17 @@
         <div class="form-group row">
             <label for="specialty" class="col-md-4 col-form-label text-md-right">{{ __('Tipologia') }}</label>
             <div class="col-md-6">
-                <select class="custom-select" name="typology">
+                <input type="text" id="type" name="type" class="form-control @error('type') is-invalid @enderror" required autofocus>
+                @error('type')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+                {{-- <select class="custom-select" name="typology">
                     @foreach ($typologies as $typology)
                     <option value="typology">{{ $typology }}</option>
                     @endforeach
-                </select>
+                </select> --}}
             </div>
         </div>
         <div class="form-group row">
@@ -75,7 +92,7 @@
             <div class="form-group row">
                 <label for="photo" class="col-md-4 col-form-label text-md-right">{{ __('Foto do Imóvel') }}</label>
                 <div class="col-md-6">
-                    <input type="file" id="photo" name="photo" class="form-control @error('photo') is-invalid @enderror" autofocus>
+                    <input type="file" id="photo" name="photo" class="p-1 form-control @error('photo') is-invalid @enderror" autofocus>
                     @error('photo')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>

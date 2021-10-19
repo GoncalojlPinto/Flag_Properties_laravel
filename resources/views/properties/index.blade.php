@@ -43,9 +43,9 @@
                     <td>{{ $property->bathrooms }}</td>
                     <td>
                         <div class="d-flex align-items-center justify-content-around">
-                            <a class="btn btn-small btn-success" href="{{ route('property.show', $property->id) }}"><i class="fa fa-eye"></i></a>
-                            <a class="btn btn-small btn-info" href="{{ route('property.edit', $property->id) }}"><i class="fa fa-edit"></i></a>
-                            <form action="{{ route('property.destroy', $property->id) }}" method="POST">
+                            <a class="btn btn-small btn-success" href="{{ route('properties.show', $property->id) }}"><i class="fa fa-eye"></i></a>
+                            <a class="btn btn-small btn-info" href="{{ route('properties.edit', $property->id) }}"><i class="fa fa-edit"></i></a>
+                            <form action="{{ route('properties.destroy', $property->id) }}" method="POST">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="btn btn-small btn-danger"><i class="fa fa-times"></i></button>
                             </form>
