@@ -43,17 +43,11 @@
         <div class="form-group row">
             <label for="specialty" class="col-md-4 col-form-label text-md-right">{{ __('Tipologia') }}</label>
             <div class="col-md-6">
-                <input type="text" id="type" name="type" class="form-control @error('type') is-invalid @enderror" required autofocus>
-                @error('type')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-                {{-- <select class="custom-select" name="typology">
+                <select class="custom-select" name="type">
                     @foreach ($typologies as $typology)
-                    <option value="typology">{{ $typology }}</option>
+                    <option value={{ $typology }}> {{ $typology }} </option>
                     @endforeach
-                </select> --}}
+                </select>
             </div>
         </div>
         <div class="form-group row">

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Property;
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\MessageBag;
 
 class PropertyController extends Controller
 {
@@ -25,8 +27,7 @@ class PropertyController extends Controller
     public function create()
     {
 
-        // ["typologies" => Property::$typologies]
-        return view('properties.create');
+        return view('properties.create', ["typologies" => Property::TYPOLOGIES]);
     }
 
     /**
@@ -39,9 +40,21 @@ class PropertyController extends Controller
     {
         $input = $request->all();
 
-        // $validator = Property::validateDataInput($input);
+        $input['photo'] = $this->ValidatorForPhotoStorage($request);
+
+        $validator = Property::validateDataInput($input);
+
+        if($validator->fails()){
+            return redirect()->route('properties.create')->withErrors($validator->errors());
+        }
+
         $property = $this->fillProperty(new Property(), $input);
-        $property->save();
+
+        try {
+            $property->save();
+        }catch(QueryException $error){
+            return redirect()->route('properties.index')->withErrors(new MessageBag(["error", "Erro ao tentar gravar o Imóvel"]));
+        }
 
         return redirect(route('properties.index'));
 
@@ -67,7 +80,7 @@ class PropertyController extends Controller
      */
     public function edit(Property $property)
     {
-        return view('properties.edit', ['property' => $property]);
+        return view('properties.edit', ['property' => $property, 'typologies' => Property::TYPOLOGIES]);
     }
 
     /**
@@ -81,9 +94,21 @@ class PropertyController extends Controller
     {
         $input = $request->all();
 
-        // $validator = Property::validateDataInput($input);
+        $input['photo'] = $this->ValidatorForPhotoStorage($request);
+
+        $validator = Property::validateDataInput($input);
+
+        if($validator->fails()){
+            return redirect()->route('properties.edit', $property->id)->withErrors($validator->errors());
+        }
+
         $property = $this->fillProperty($property, $input);
-        $property->save();
+
+        try{
+            $property->save();
+        }catch(QueryException $error){
+            return redirect()->route('properties.index')->withErrors(new MessageBag(["error", $error->getMessage()]));
+        }
 
         return redirect(route('properties.index'))->with("message", "Imóvel atualizado com sucesso.");
     }
@@ -97,7 +122,7 @@ class PropertyController extends Controller
     public function destroy(Property $property)
     {
         Property::destroy($property->id);
-        return redirect()->route('properties.index')->with("message", " Imóvel Eliminado com sucesso.");
+        return redirect()->route('properties.index')->with("message", " Imóvel removido com sucesso.");
     }
 
     private function fillProperty(Property $property, array $input): Property
@@ -110,10 +135,27 @@ class PropertyController extends Controller
         $property->location = $input['location'];
         $property->price = $input['price'];
 
-        // if($input['photo']){
-        //     $property->photo = $input['photo'];
-
-        return $property;
+        if($input['photo']){
+            $property->photo = $input['photo'];
         }
 
+        return $property;
     }
+
+    private function ValidatorForPhotoStorage(Request $request) {
+
+        $ValidExtension = ['jpg', 'jpeg', 'png'];
+
+        if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
+            $file = $request->file('photo');
+            $extension = $file->extension();
+
+        if (in_array($extension, $ValidExtension)) {
+            $photoFile = uniqid() .'.'. $extension;
+            return $file->storeAs('/', $photoFile, 'assets');
+        }
+            return false;
+        }
+        return false;
+    }
+}
