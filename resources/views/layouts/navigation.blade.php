@@ -18,6 +18,9 @@
                     <x-nav-link :href="route('properties.index')" :active="request()->routeIs('properties.index')">
                         {{ __('Imóveis') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('favorites.index')" :active="request()->routeIs('favorites.index')">
+                        {{ __('Favoritos') }}
+                    </x-nav-link>
 
 
                 </div>
@@ -47,6 +50,7 @@
                                                 this.closest('form').submit();">
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
+                            <x-dropdown-link>{{ __('TESTING') }}</x-dropdown-link>
                         </form>
                     </x-slot>
                 </x-dropdown>
@@ -88,6 +92,9 @@
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
                         {{ __('Log Out') }}
+
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link  href="{{ url('my_favorites') }}">My Favorites</a>
                     </x-responsive-nav-link>
                 </form>
             </div>

@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Property;
+use App\Models\User;
+use App\Models\Favorite;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\MessageBag;
+use Illuminate\Support\Facades\Auth;
 
 class PropertyController extends Controller
 {
@@ -158,4 +161,29 @@ class PropertyController extends Controller
         }
         return false;
     }
+
+    public function favoritePost(Property $property)
+{
+        $user = Auth::user();
+    //$favorite =  (new User)->favorites();
+    //$user->favorites()->attach($property->id);
+    $favorite = new Favorite;
+    $favorite->user_id = $user->id;
+    $favorite->property_id = $property->id;
+    $favorite->save();
+    return response()->json(['Sucess' => 'True']);
+
 }
+
+public function unFavoritePost(Property $property)
+{
+    $user = Auth::user();
+    $favorite = $user->favorites()->where('property_id', $property->id)->get()->get(0)->delete();
+
+
+
+
+    
+}
+}
+

@@ -23,7 +23,7 @@
 
 
 
-            <div class="container ml-1 mr-2antialiased text-gray-900">
+            <div class="container ml-1 mr-2antialiased text-gray-900" id='app'>
                 <div class="flex flex-wrap w-full">
                     @foreach ($properties as $property)
                 <div class="w-full sm:w-1/2 md:w-1/2 xl:w-1/3 p-4">
@@ -57,13 +57,20 @@
                         </form>
                     </div>
                     </a>
+                    <div>
+                        @if (Auth::check())
+                        <div class="panel-footer">
+                            <favorite
+                                :post={{ $property->id }}
+                                :favorited={{ $property->favorited() ? 'true' : 'false' }}
+                            ></favorite>
+                        </div>
+                    @endif
                 </div>
+                    </div>
 
-                @endforeach
-
+                    @endforeach
+                </div>
             </div>
-        </div>
-            </div>
-
 
 </x-app-layout>

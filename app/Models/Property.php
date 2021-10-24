@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Validation\Validator as PropertyDataValidator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Favorite;
 
 class Property extends Model {
 
@@ -30,6 +32,15 @@ class Property extends Model {
         return Validator::make($input, $rules);
     }
 
+public function users() {
 
+    return $this->belongsToMany(User::class, 'favorites', 'property_id', 'user_id');
+}
+
+
+public function favorited()
+{
+    return (bool) Favorite::where('user_id', Auth::id())->where('property_id', $this->id)->first();
+}
 
 }
