@@ -29,7 +29,7 @@
                 <div class="w-full sm:w-1/2 md:w-1/2 xl:w-1/3 p-4">
                     <a href="{{ route('properties.show', $property->id) }}" class="c-card block bg-white shadow-md hover:shadow-xl rounded-lg overflow-hidden">
                     <div class="relative pb-48 overflow-hidden">
-                    <img class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-in-out transform hover:scale-105" src="{{ $property->photo ? asset("images/".$property->photo) : asset("images/default.jpg") }}" alt="photo">
+                    <img class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-in-out transform hover:scale-105" src="{{ $property->photo ? asset("/storage/images/".$property->photo) : asset("storage/images/default.jpg") }}" alt="photo">
                     </div>
                     <div class="p-4">
                         <h4 class="mt-2 mb-2  font-bold">{{ $property->description }}</h4>

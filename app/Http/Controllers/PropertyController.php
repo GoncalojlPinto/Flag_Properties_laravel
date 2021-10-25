@@ -155,7 +155,7 @@ class PropertyController extends Controller
 
         if (in_array($extension, $ValidExtension)) {
             $photoFile = uniqid() .'.'. $extension;
-            return $file->storeAs('/', $photoFile, 'assets');
+            return $file->storeAs('/', $photoFile, 'public_images');
         }
             return false;
         }
@@ -183,7 +183,7 @@ public function unFavoritePost(Property $property)
 
 
 
-    
+
 }
 }
 
