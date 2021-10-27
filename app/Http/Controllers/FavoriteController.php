@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Favorite;
+use App\Models\Property;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +18,7 @@ class FavoriteController extends Controller
      */
     public function index()
     {
-        
+
     }
     /**
      * Show the form for creating a new resource.
@@ -84,5 +85,7 @@ class FavoriteController extends Controller
     {
         //
     }
+
+
 
 }

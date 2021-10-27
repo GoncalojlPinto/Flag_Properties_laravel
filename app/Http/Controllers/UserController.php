@@ -2,17 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use app\Models\Favorite;
+use app\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use app\Models\User;
+use App\Models\Property;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
 
-    public function myFavorites()
-{
-    $myFavorites = Auth::user()->favorites;
+    public function allFavorites(Property $property)
+    {
 
-    return view('users.my_favorites', compact('myFavorites'));
+
+
+        
+    $favorites = DB::table('properties')
+    ->select('properties.*')
+    ->join('favorites', 'properties.id', '=', 'favorites.property_id')
+    ->get();
+
+
+
+    return view('user.myfavorites', ['favorites' => $favorites]);
 }
+
 }

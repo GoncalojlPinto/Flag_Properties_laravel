@@ -165,8 +165,6 @@ class PropertyController extends Controller
     public function favoritePost(Property $property)
 {
         $user = Auth::user();
-    //$favorite =  (new User)->favorites();
-    //$user->favorites()->attach($property->id);
     $favorite = new Favorite;
     $favorite->user_id = $user->id;
     $favorite->property_id = $property->id;
@@ -179,10 +177,6 @@ public function unFavoritePost(Property $property)
 {
     $user = Auth::user();
     $favorite = $user->favorites()->where('property_id', $property->id)->get()->get(0)->delete();
-
-
-
-
 
 }
 }

@@ -13,10 +13,11 @@
                     <div card="card-body">
                         <div class="row">
                             <div class="col-sm-6 col-md-5" style="text-align: center">
-                                <img src="{{ $property->photo ? asset("/storage/images/".$property->photo) : asset("storage/images/default.jpg") }}" />
+                                <img
+                                    src="{{ $property->photo ? asset('/storage/images/' . $property->photo) : asset('storage/images/default.jpg') }}" />
                             </div>
                             <div class="col-sm-6 col-md-7">
-                                <h5><strong> {{ $property->description}}</strong></h5>
+                                <h5><strong> {{ $property->description }}</strong></h5>
                                 <hr>
                                 <p>
                                     {{ $property->location }}<br>
@@ -32,10 +33,11 @@
                 </div>
                 <div class="float-right">
 
-                  <a href="{{ route('properties.index') }}" class="btn btn-small btn-primary mt-3 w-24">{{ __('Voltar') }}</a>
+                    <a href="{{ route('properties.index') }}"
+                        class="btn btn-small btn-primary mt-3 w-24">{{ __('Voltar') }}</a>
 
-            </div>
+                </div>
             </div>
         </div>
-</div>
+    </div>
 </x-app-layout>

@@ -31,12 +31,12 @@ Route::get('/dashboard', function () {
 
 
 Route::resource('properties', PropertyController::class);
-Route::resource('favorites', FavoriteController::class);
 
 
 Route::post('favorite/{property}', 'App\Http\Controllers\PropertyController@favoritePost');
 Route::post('unfavorite/{property}', 'App\Http\Controllers\PropertyController@unFavoritePost');
-Route::get('my_favorites', 'App\Http\Controllers\UserController@myFavorites')->middleware('auth');
+
+Route::get('/my_favorites',[UserController::class, 'allFavorites']);
 
 
 require __DIR__.'/auth.php';
