@@ -29,6 +29,10 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+Route::get('/adminpanel', function () {
+    return view('admin.panel');
+})->middleware('role:admin');
+
 
 Route::resource('properties', PropertyController::class);
 
@@ -36,7 +40,7 @@ Route::resource('properties', PropertyController::class);
 Route::post('favorite/{property}', 'App\Http\Controllers\PropertyController@favoritePost');
 Route::post('unfavorite/{property}', 'App\Http\Controllers\PropertyController@unFavoritePost');
 
-Route::get('/my_favorites',[UserController::class, 'allFavorites']);
+Route::get('/my_favorites',[UserController::class, 'allFavorites'])->middleware('role:user|admin|agent');
 
 
 require __DIR__.'/auth.php';

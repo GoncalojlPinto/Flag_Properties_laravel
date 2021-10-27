@@ -16,14 +16,11 @@ class UserController extends Controller
     {
 
 
-
-        
     $favorites = DB::table('properties')
     ->select('properties.*')
     ->join('favorites', 'properties.id', '=', 'favorites.property_id')
+    ->where('user_id', '=' , auth()->id())
     ->get();
-
-
 
     return view('user.myfavorites', ['favorites' => $favorites]);
 }
