@@ -18,10 +18,13 @@
             </ul>
         </div>
     @endif
+
+    @hasanyrole('admin|agent')
     <a class='inline-flex hover:no-underline items-center px-4 py-2 bg-yellow-600 rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-yellow-700 active:bg-yellow-900 focus:outline-none focus:border-yellow-900 focus:ring ring-yellow-600 disabled:opacity-25 transition ease-in-out duration-150 no-underline p-3 m-3'
         href="{{ route('properties.create') }}" title="{{ __('Inserir novo Imóvel') }}">
         {{ __('Inserir Novo Imóvel') }}
     </a>
+    @endhasanyrole
 
 
 
@@ -55,6 +58,8 @@
                                 <i class="fas fa-bath mr-2"></i> {{ $property->bathrooms }}
                             </span>
                         </div>
+
+                        @if (auth()->user()->id == $property->agent_id)
                         <div class="d-flex align-items-center space-x-4">
                             <a class="btn btn-info" href="{{ route('properties.edit', $property->id) }}"><i
                                     class="fa fa-edit"></i> Editar</a>
@@ -64,6 +69,8 @@
                                     Apagar</button>
                             </form>
                         </div>
+                        @endif
+
                     </a>
                     <div>
                         @if (Auth::check())

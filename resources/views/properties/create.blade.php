@@ -95,6 +95,17 @@
                 </div>
             </div>
 
+
+                <div class="col-md-6">
+                    <input type="hidden" id="agent_id" name="agent_id" value="agent_id" class="p-1 form-control @error('agent_id') is-invalid @enderror" autofocus>
+                    @error('agent_id')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+
+
         <div class="form-group row">
             <div class="col-md-6">
                 <button type="submit" class="btn btn-primary">
