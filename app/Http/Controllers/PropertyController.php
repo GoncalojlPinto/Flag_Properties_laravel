@@ -9,9 +9,13 @@ use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class PropertyController extends Controller
 {
+
+
 
     /**
      * Display a listing of the resource.
@@ -20,17 +24,22 @@ class PropertyController extends Controller
      */
     public function index()
     {
-        return view('properties.index', ["properties" => Property::all()]);
+
+        return view('properties.index', ["properties" => Property::all(), 'users' => User::all()]);
     }
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(User $user)
     {
-
+        $user = auth()->user();
+        if($user->hasRole('admin|agent')){
         return view('properties.create', ["typologies" => Property::TYPOLOGIES]);
+    }else{
+        return abort(403, "Lamentamos mas não tem permissão para inserir um Imóvel");
+    }
     }
 
     /**
@@ -44,10 +53,11 @@ class PropertyController extends Controller
         $input = $request->all();
 
         $input['photo'] = $this->ValidatorForPhotoStorage($request);
+        $input['agent_id'] = auth()->user()->id;
 
         $validator = Property::validateDataInput($input);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return redirect()->route('properties.create')->withErrors($validator->errors());
         }
 
@@ -55,13 +65,11 @@ class PropertyController extends Controller
 
         try {
             $property->save();
-        }catch(QueryException $error){
+        } catch (QueryException $error) {
             return redirect()->route('properties.index')->withErrors(new MessageBag(["error", "Erro ao tentar gravar o Imóvel"]));
         }
 
         return redirect(route('properties.index'));
-
-
     }
 
     /**
@@ -83,7 +91,12 @@ class PropertyController extends Controller
      */
     public function edit(Property $property)
     {
-        return view('properties.edit', ['property' => $property, 'typologies' => Property::TYPOLOGIES]);
+        if (auth()->user()->id !== $property->agent_id) {
+
+            return abort(403, "Lamentamos mas não tem permissão para editar este Imóvel");
+        } else {
+            return view('properties.edit', ['property' => $property, 'typologies' => Property::TYPOLOGIES]);
+        }
     }
 
     /**
@@ -98,18 +111,18 @@ class PropertyController extends Controller
         $input = $request->all();
 
         $input['photo'] = $this->ValidatorForPhotoStorage($request);
-
+        $input['agent_id'] = auth()->user()->id;
         $validator = Property::validateDataInput($input);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return redirect()->route('properties.edit', $property->id)->withErrors($validator->errors());
         }
 
         $property = $this->fillProperty($property, $input);
 
-        try{
+        try {
             $property->save();
-        }catch(QueryException $error){
+        } catch (QueryException $error) {
             return redirect()->route('properties.index')->withErrors(new MessageBag(["error", $error->getMessage()]));
         }
 
@@ -124,8 +137,13 @@ class PropertyController extends Controller
      */
     public function destroy(Property $property)
     {
-        Property::destroy($property->id);
-        return redirect()->route('properties.index')->with("message", " Imóvel removido com sucesso.");
+        if (auth()->user()->id !== $property->agent_id) {
+
+            return abort(403, "Lamentamos mas não tem permissão para apagar este Imóvel");
+        } else {
+            Property::destroy($property->id);
+            return redirect()->route('properties.index')->with("message", " Imóvel removido com sucesso.");
+        }
     }
 
     private function fillProperty(Property $property, array $input): Property
@@ -137,15 +155,17 @@ class PropertyController extends Controller
         $property->bathrooms = $input['bathrooms'];
         $property->location = $input['location'];
         $property->price = $input['price'];
+        $property->agent_id = $input['agent_id'];
 
-        if($input['photo']){
+        if ($input['photo']) {
             $property->photo = $input['photo'];
         }
 
         return $property;
     }
 
-    private function ValidatorForPhotoStorage(Request $request) {
+    private function ValidatorForPhotoStorage(Request $request)
+    {
 
         $ValidExtension = ['jpg', 'jpeg', 'png'];
 
@@ -153,31 +173,28 @@ class PropertyController extends Controller
             $file = $request->file('photo');
             $extension = $file->extension();
 
-        if (in_array($extension, $ValidExtension)) {
-            $photoFile = uniqid() .'.'. $extension;
-            return $file->storeAs('/', $photoFile, 'public_images');
-        }
+            if (in_array($extension, $ValidExtension)) {
+                $photoFile = uniqid() . '.' . $extension;
+                return $file->storeAs('/', $photoFile, 'public_images');
+            }
             return false;
         }
         return false;
     }
 
     public function favoritePost(Property $property)
-{
+    {
         $user = Auth::user();
-    $favorite = new Favorite;
-    $favorite->user_id = $user->id;
-    $favorite->property_id = $property->id;
-    $favorite->save();
-    return response()->json(['Sucess' => 'True']);
+        $favorite = new Favorite;
+        $favorite->user_id = $user->id;
+        $favorite->property_id = $property->id;
+        $favorite->save();
+        return response()->json(['Sucess' => 'True']);
+    }
 
+    public function unFavoritePost(Property $property)
+    {
+        $user = Auth::user();
+        $favorite = $user->favorites()->where('property_id', $property->id)->get()->get(0)->delete();
+    }
 }
-
-public function unFavoritePost(Property $property)
-{
-    $user = Auth::user();
-    $favorite = $user->favorites()->where('property_id', $property->id)->get()->get(0)->delete();
-
-}
-}
-

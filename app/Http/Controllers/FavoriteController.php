@@ -7,6 +7,7 @@ use App\Models\Property;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Redirect;
 
 class FavoriteController extends Controller
@@ -18,7 +19,7 @@ class FavoriteController extends Controller
      */
     public function index()
     {
-
+        return view('user.myfavorites', ['favorites' => Favorite::all()]);
     }
     /**
      * Show the form for creating a new resource.
@@ -86,6 +87,18 @@ class FavoriteController extends Controller
         //
     }
 
+    public function allFavorites(Property $property)
+    {
+
+
+    $favorites = DB::table('properties')
+    ->select('properties.*')
+    ->join('favorites', 'properties.id', '=', 'favorites.property_id')
+    ->where('user_id', '=' , auth()->id())
+    ->get();
+
+    return view('user.myfavorites', ['favorites' => $favorites]);
+}
 
 
 }
