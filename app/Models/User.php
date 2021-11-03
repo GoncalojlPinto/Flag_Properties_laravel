@@ -53,4 +53,8 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Property::class, 'favorites', 'user_id', 'property_id');
     }
+
+    // public function agentProperties() {
+    //     return $this->hasMany(Property::class);
+    // }
 }

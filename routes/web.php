@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -21,26 +22,33 @@ use Illuminate\Auth;
 
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomePageController::class, 'index']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+
 Route::get('/adminpanel', function () {
     return view('admin.panel');
-})->middleware('role:admin');
+})->middleware('admin');
+
+
 
 
 Route::resource('properties', PropertyController::class);
+
+Route::as('admin.')->group(function () {
+
+    return Route::resource('admin/users', UserController::class)->middleware('admin');
+});
 
 
 Route::post('favorite/{property}', 'App\Http\Controllers\PropertyController@favoritePost');
 Route::post('unfavorite/{property}', 'App\Http\Controllers\PropertyController@unFavoritePost');
 
-Route::get('/my_favorites',[UserController::class, 'allFavorites'])->middleware('role:user|admin|agent');
+
+Route::get('/my_favorites',[FavoriteController::class, 'allFavorites'])->middleware(['auth']);
 
 
 require __DIR__.'/auth.php';
