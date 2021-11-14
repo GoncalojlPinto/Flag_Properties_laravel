@@ -1,9 +1,10 @@
 <template>
     <span>
-        <a href="#" v-if="isFavorited" @click.prevent="unFavorite(post)">
-            <i  class="fa fa-heart"></i>
+        <a href="#" class="btn btn-warning" v-if="isFavorited" @click.prevent="unFavorite(post)">
+            <i class="fas fa-heart-broken"></i>
         </a>
-        <a href="#" v-else @click.prevent="favorite(post)">
+
+        <a href="#" class="btn btn-warning" v-else @click.prevent="favorite(post)">
             <i class="fas fa-heart"></i>
         </a>
     </span>
