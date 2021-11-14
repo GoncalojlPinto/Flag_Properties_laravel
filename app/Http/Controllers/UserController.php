@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use app\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\MessageBag;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -16,9 +17,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('admin.users.index', ['users' => User::all()]);
+        return view('admin/users.index', ['users' => User::all()]);
     }
-        //Property belongsTo User and Property hasMany Favorite  and User hasMany Property
     /**
      * Show the form for creating a new resource.
      *
@@ -26,7 +26,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admin.users.create', ['users' => User::all()]);
+        //
     }
 
     /**
@@ -35,13 +35,14 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, User $user)
     {
-        $user = User::all();
         $input = $request->all();
 
-        $input['nome'] = $user->name;
+        $input['name'] = $user->name;
         $input['email'] = $user->email;
+        $input['addRole'] = $user->addRoleAgent();
+        $input['removeRole'] = $user->removeRoleAgent();
 
         $user = $this->fillUser(new User(), $input);
 
@@ -49,10 +50,10 @@ class UserController extends Controller
         try {
             $user->save();
         } catch (QueryException $error) {
-            return redirect()->route('admin.users.index')->withErrors(new MessageBag(["error", "Erro ao tentar gravar o Utilizador"]));
+            return redirect()->route('admin/users.index')->withErrors(new MessageBag(["error", "Erro ao tentar gravar o Utilizador"]));
         }
 
-        return redirect(url('/adminpanel'));
+        return redirect(route('admin/users.index'));
     }
 
 
@@ -64,7 +65,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('admin.users.show', ['user' => $user]);
+        dd($user);
+        return view('admin/users.show', ['user' => $user]);
     }
 
     /**
@@ -73,9 +75,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit()
     {
-        return view('admin.users.edit', ['user' => $user]);
+        return view('admin/users.edit', ['users' => User::all()]);
     }
 
     /**
@@ -87,13 +89,14 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $user = User::all();
         $input = $request->all();
 
         $input['nome'] = $user->name;
         $input['email'] = $user->email;
+        $input['addRole'] = $user->addRoleAgent();
+        $input['removeRole'] = $user->removeRoleAgent();
 
-        $user = $this->fillUser(new User(), $input);
+        $user = $this->fillUser($user, $input);
 
 
         try {
@@ -102,7 +105,7 @@ class UserController extends Controller
             return redirect()->route('admin.users.index')->withErrors(new MessageBag(["error", "Erro ao tentar gravar o Utilizador"]));
         }
 
-        return redirect(route('properties.index'));
+        return redirect(route('admin.users.index'));
     }
 
     /**
@@ -121,9 +124,9 @@ class UserController extends Controller
     {
         $user->name = $input['nome'];
         $user->email = $input['email'];
+        $input['addRoleAgent'] = $user->addRoleAgent();
+        $input['removeRoleAgent'] = $user->removeRoleAgent();
 
         return $user;
     }
-
-    }
-
+}

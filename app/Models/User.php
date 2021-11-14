@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Property;
+use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
@@ -44,6 +45,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function getId()
+    {
+        return $this->id;
+    }
+
     public function favorites()
     {
         return $this->hasMany(Favorite::class);
@@ -54,7 +60,15 @@ class User extends Authenticatable
         return $this->belongsToMany(Property::class, 'favorites', 'user_id', 'property_id');
     }
 
-    // public function agentProperties() {
-    //     return $this->hasMany(Property::class);
-    // }
+    public function offers()
+    {
+        return $this->hasMany(Offer::class);
+    }
+
+
+
+    public function properties()
+    {
+        $this->hasMany(Property::class, 'agent_id');
+    }
 }

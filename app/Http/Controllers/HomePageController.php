@@ -7,9 +7,13 @@ use Illuminate\Http\Request;
 
 class HomePageController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         return view('homepage.index', ['properties' => Property::all()]);
     }
 
-
+    public function aboutpage()
+    {
+        return view('homepage.aboutpage');
+    }
 }

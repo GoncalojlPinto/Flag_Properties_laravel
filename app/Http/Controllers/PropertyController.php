@@ -35,11 +35,11 @@ class PropertyController extends Controller
     public function create(User $user)
     {
         $user = auth()->user();
-        if($user->hasRole('admin|agent')){
-        return view('properties.create', ["typologies" => Property::TYPOLOGIES]);
-    }else{
-        return abort(403, "Lamentamos mas não tem permissão para inserir um Imóvel");
-    }
+        if ($user->hasRole('admin|agent')) {
+            return view('properties.create', ["typologies" => Property::TYPOLOGIES]);
+        } else {
+            return abort(403, "Lamentamos mas não tem permissão para inserir um Imóvel");
+        }
     }
 
     /**
@@ -68,8 +68,7 @@ class PropertyController extends Controller
         } catch (QueryException $error) {
             return redirect()->route('properties.index')->withErrors(new MessageBag(["error", "Erro ao tentar gravar o Imóvel"]));
         }
-
-        return redirect(route('properties.index'));
+        return redirect(route('properties.index'))->with("message", "Imóvel publicado com sucesso.");
     }
 
     /**
