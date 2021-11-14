@@ -1,3 +1,34 @@
+{{-- <x-guest-layout>
+
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Sobre Nós') }}
+        </h2>
+    </x-slot>
+
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 bg-white border-b border-gray-200">
+                    {{ __('Ao entrar no mercado Português, a FlagProperties propôs-se aplicar o modelo de negócio inovador e de sucesso em todo o mundo e com ele alterar a maneira como se vendiam e compravam imóveis e se geria uma agência imobiliária. O desafio era impulsionar mudanças na qualidade do sector – proporcionar um melhor serviço ao cliente, introduzir novos sistemas de gestão e de marketing e profissionalizar os agentes imobiliários.') }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 bg-white border-b border-gray-200">
+                    <p> {{ __('Contactos: +351 210 000 000') }}</p>
+                    <p>{{ __('Email:') }}<a href="mailto:geral@flagproperties.com">
+                            {{ __('geral@flagproperties.com') }}<a></p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</x-guest-layout> --}}
+
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100 border-top-5">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl pl-0 ml-0  sm:px-6 lg:px-8">
@@ -7,6 +38,7 @@
                 <div class="flex-shrink-0 flex ml-1 pr-4">
 
                     <a href="{{url('/')}} "><img src="../../assets/flagImoveis.png" alt="logo" width='70px' height='70px'></a>
+
 
                 </div>
             </div>
@@ -108,32 +140,27 @@
     @endif
 
 
-    <div class="container antialiased text-gray-900">
-        <div class="flex flex-wrap w-full">
-            @foreach ($properties as $property)
-                <div class="w-full sm:w-1/2 md:w-1/2 xl:w-1/3 p-4">
-                    <div class="c-card block bg-white shadow-md hover:shadow-xl rounded-lg overflow-hidden">
-                        <div class="relative pb-48 overflow-hidden">
-                            <img class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-in-out transform hover:scale-105"
-                                src="{{ $property->photo ? asset('/storage/images/' . $property->photo) : asset('storage/images/default.jpg') }}"
-                                alt="photo">
-                        </div>
-                        <div class="p-4">
-                            <h4 class="mt-2 mb-2  font-bold">{{ $property->description }}</h4>
-                            <h5 class="text-sm">{{ $property->location }}</h5>
-                            <div class="mt-3 flex items-center">
-                                <span class="font-bold text-xl">{{ number_format($property->price, 0, ',', '.') }}
-                                    €</span>&nbsp;<span class="text-sm font-semibold"></span>
-                            </div>
-                        </div>
-
-
-
-                    </div>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 bg-white border-b border-gray-200">
+                    {{ __('Ao entrar no mercado Português, a FlagProperties propôs-se aplicar o modelo de negócio inovador e de sucesso em todo o mundo e com ele alterar a maneira como se vendiam e compravam imóveis e se geria uma agência imobiliária. O desafio era impulsionar mudanças na qualidade do sector – proporcionar um melhor serviço ao cliente, introduzir novos sistemas de gestão e de marketing e profissionalizar os agentes imobiliários.') }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 bg-white border-b border-gray-200">
+                    <p> {{ __('Contactos: +351 210 000 000') }}</p>
+                    <p>{{ __('Email:') }}<a href="mailto:geral@flagproperties.com">
+                            {{ __('geral@flagproperties.com') }}<a></p>
                 </div>
 
-            @endforeach
+            </div>
         </div>
     </div>
 
 </x-guest-layout>
+
