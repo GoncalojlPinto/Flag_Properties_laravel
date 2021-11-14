@@ -20,31 +20,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
 
+
+
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/app.js') }}" async defer></script>
 </head>
 
-<body class="font-sans antialiased main-bg h-full bg-cover bg-left">
-    @if (Route::has('login'))
-        <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
-            @auth
-                <a href="{{ url('/dashboard') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Dashboard</a>
-            @else
-                <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a>
-
-                @if (Route::has('register'))
-                    <a href="{{ route('register') }}"
-                        class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
-                @endif
-            @endauth
-            <a href="{{ url('/about') }}" class="text-sm text-gray-700 dark:text-gray-500 underline pl-5">Sobre Nós</a>
-        </div>
-    @endif
-
+<body class="font-sans antialiased main-bg w-full h-full bg-cover bg-left">
     <div class="">
+        @include('layouts.adminNav')
 
+        <!-- Page Heading -->
+        <header class="bg-white shadow">
+            <div class="max-w-7xl ml-4 py-6 px-4 sm:px-6 lg:px-8">
+                {{ $header }}
+            </div>
+        </header>
 
-
+        <!-- Page Content -->
         <main>
             {{ $slot }}
         </main>
