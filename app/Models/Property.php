@@ -9,13 +9,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Favorite;
 
-class Property extends Model {
+class Property extends Model
+{
 
     use HasFactory;
 
     const TYPOLOGIES = ['T0', 'T1', 'T2', 'T3', 'T4',  'T5', 'T6'];
 
-    public static function validateDataInput (array $input): PropertyDataValidator
+    public static function validateDataInput(array $input): PropertyDataValidator
     {
 
         $rules = [
@@ -25,22 +26,27 @@ class Property extends Model {
             'type' => 'required',
             'bedrooms' => 'required|numeric|min:1',
             'bathrooms' => 'required|min:1',
-            'price' => 'required|numeric'
-        ];
+            'price' => 'required|numeric',
 
+        ];
 
         return Validator::make($input, $rules);
     }
 
-public function users() {
 
-    return $this->belongsToMany(User::class, 'favorites', 'property_id', 'user_id');
-}
+    public function users()
+    {
 
+        return $this->belongsTo(User::class);
+    }
 
-public function favorited()
-{
-    return (bool) Favorite::where('user_id', Auth::id())->where('property_id', $this->id)->first();
-}
+    public function favorited()
+    {
+        return Favorite::where('user_id', Auth::id())->where('property_id', $this->id)->first();
+    }
 
+    public function offers()
+    {
+        return $this->hasMany(Offer::class);
+    }
 }
