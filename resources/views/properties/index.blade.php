@@ -20,10 +20,17 @@
     @endif
 
     @hasanyrole('admin|agent')
-    <a class='inline-flex hover:no-underline items-center px-4 py-2 bg-yellow-600 rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-yellow-700 active:bg-yellow-900 focus:outline-none focus:border-yellow-900 focus:ring ring-yellow-600 disabled:opacity-25 transition ease-in-out duration-150 no-underline p-3 m-3'
-        href="{{ route('properties.create') }}" title="{{ __('Inserir novo Imóvel') }}">
-        {{ __('Inserir Novo Imóvel') }}
-    </a>
+        <a class='inline-flex hover:no-underline items-center px-4 py-2 bg-yellow-600 rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-yellow-700 active:bg-yellow-900 focus:outline-none focus:border-yellow-900 focus:ring ring-yellow-600 disabled:opacity-25 transition ease-in-out duration-150 no-underline p-3 m-3'
+            href="{{ route('properties.create') }}" title="{{ __('Inserir novo Imóvel') }}">
+            {{ __('Inserir Novo Imóvel') }}
+        </a>
+    @endhasanyrole
+    @hasanyrole('user|admin')
+        <a class="inline-flex hover:no-underline items-center px-4 py-2 bg-yellow-600 rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-yellow-700 active:bg-yellow-900 focus:outline-none focus:border-yellow-900 focus:ring ring-yellow-600 disabled:opacity-25 transition ease-in-out duration-150 no-underline p-3 m-3"
+            href="{{ route('appointments.create') }}" title="{{ __('Agendar Visita') }}"> {{ __('Agendar Visita') }} </a>
+        <a class="inline-flex hover:no-underline items-center px-4 py-2 bg-yellow-600 rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-yellow-700 active:bg-yellow-900 focus:outline-none focus:border-yellow-900 focus:ring ring-yellow-600 disabled:opacity-25 transition ease-in-out duration-150 no-underline p-3 m-3"
+            href="{{ route('offers.create') }}" title="{{ __('Fazer Oferta de Compra') }}"
+            title="{{ __('Agendar Visita') }}"> {{ __('Fazer Oferta de Compra') }} </a>
     @endhasanyrole
 
 
@@ -59,27 +66,29 @@
                             </span>
                         </div>
 
-                        @if (auth()->user()->id == $property->agent_id)
                         <div class="d-flex align-items-center space-x-4">
-                            <a class="btn btn-info" href="{{ route('properties.edit', $property->id) }}"><i
-                                    class="fa fa-edit"></i> Editar</a>
-                            <form action="{{ route('properties.destroy', $property->id) }}" method="POST">
-                                @csrf @method('DELETE')
-                                <button type="submit" class="btn btn-danger"><i class="fa fa-times"></i>
-                                    Apagar</button>
-                            </form>
+                            @if (auth()->user()->id == $property->agent_id)
+                                <a class="btn btn-info" href="{{ route('properties.edit', $property->id) }}"><i
+                                        class="fa fa-edit"></i> {{ __('Editar') }} </a>
+                                <form action="{{ route('properties.destroy', $property->id) }}" method="POST">
+                                    @csrf @method('DELETE')
+                                    <button type="submit" class="btn btn-danger"><i class="fa fa-times"></i>
+                                        {{ __('Apagar') }}</button>
+                                </form>
+                            @endif
+                            @hasanyrole('user|admin')
+                                <a>
+                                    @if (Auth::check())
+                                        <div class="panel-footer">
+                                            <favorite :post={{ $property->id }}
+                                                :favorited={{ $property->favorited() ? 'true' : 'false' }}></favorite>
+                                        </div>
+                                    @endif
+                                </a>
+                            @endhasanyrole
                         </div>
-                        @endif
-
                     </a>
-                    <div>
-                        @if (Auth::check())
-                            <div class="panel-footer">
-                                <favorite :post={{ $property->id }}
-                                    :favorited={{ $property->favorited() ? 'true' : 'false' }}></favorite>
-                            </div>
-                        @endif
-                    </div>
+
                 </div>
 
             @endforeach
