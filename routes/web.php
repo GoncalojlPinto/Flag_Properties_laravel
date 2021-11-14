@@ -1,11 +1,12 @@
 <?php
 
+use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\HomePageController;
+use App\Http\Controllers\OfferController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,12 +18,8 @@ use Illuminate\Auth;
 |
 */
 
-
-
-
-
-
 Route::get('/', [HomePageController::class, 'index']);
+Route::get('/about', [HomePageController::class, 'aboutpage']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -31,23 +28,17 @@ Route::get('/dashboard', function () {
 
 Route::get('/adminpanel', function () {
     return view('admin.panel');
-})->middleware('admin');
-
-
-
+})->middleware('admin')->name('Admin Panel');
 
 Route::resource('properties', PropertyController::class);
-
-Route::as('admin.')->group(function () {
-
-    return Route::resource('admin/users', UserController::class)->middleware('admin');
-});
-
+Route::resource('appointments', AppointmentController::class)->middleware(['auth']);
+Route::resource('offers', OfferController::class)->middleware(['auth']);
+Route::resource('admin/users', UserController::class)->middleware('admin');
 
 Route::post('favorite/{property}', 'App\Http\Controllers\PropertyController@favoritePost');
 Route::post('unfavorite/{property}', 'App\Http\Controllers\PropertyController@unFavoritePost');
 
-
+Route::get('/my_offers',[OfferController::class, 'allOffers'])->middleware(['auth']);
 Route::get('/my_favorites',[FavoriteController::class, 'allFavorites'])->middleware(['auth']);
 
 
